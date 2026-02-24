@@ -539,11 +539,18 @@ def share_raw_file(code):
     if sub_path and not share.get('is_dir'):
         return '无权访问', 403
 
-    filepath = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'], sub_path)
-    base_path = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
-
-    if not is_safe_path(filepath, base_path) or not os.path.isfile(filepath):
-        return '文件不存在', 404
+    # 构建文件路径
+    if share.get('is_dir'):
+        # 文件夹分享：filepath = 文件夹路径 + sub_path
+        base_path = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
+        filepath = os.path.join(base_path, sub_path) if sub_path else base_path
+        if not is_safe_path(filepath, base_path) or not os.path.isfile(filepath):
+            return '文件不存在', 404
+    else:
+        # 单个文件分享：filepath = 文件完整路径
+        filepath = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
+        if not os.path.isfile(filepath):
+            return '文件不存在', 404
 
     return send_file(filepath, as_attachment=False)
 
@@ -559,11 +566,18 @@ def share_download(code):
     if sub_path and not share.get('is_dir'):
         return '无权访问', 403
 
-    filepath = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'], sub_path)
-    base_path = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
-
-    if not is_safe_path(filepath, base_path) or not os.path.isfile(filepath):
-        return '文件不存在', 404
+    # 构建文件路径
+    if share.get('is_dir'):
+        # 文件夹分享：filepath = 文件夹路径 + sub_path
+        base_path = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
+        filepath = os.path.join(base_path, sub_path) if sub_path else base_path
+        if not is_safe_path(filepath, base_path) or not os.path.isfile(filepath):
+            return '文件不存在', 404
+    else:
+        # 单个文件分享：filepath = 文件完整路径
+        filepath = os.path.join(UPLOAD_FOLDER, share['path'], share['filename'])
+        if not os.path.isfile(filepath):
+            return '文件不存在', 404
 
     return send_file(filepath, as_attachment=True)
 

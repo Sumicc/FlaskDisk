@@ -88,12 +88,8 @@ const setupFileUpload = () => {
 };
 
 const copyShareUrl = async () => {
-    try {
-        await navigator.clipboard.writeText($('shareUrl').value);
-        showMsg('链接已复制到剪贴板', 'success');
-    } catch (err) {
-        showMsg('复制失败', 'error');
-    }
+    await navigator.clipboard.writeText($('shareUrl').value);
+    showMsg('链接已复制', 'success');
 };
 
 const copyShareLink = async (url) => {
