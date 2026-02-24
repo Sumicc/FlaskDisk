@@ -198,6 +198,7 @@ input:focus, .modal-input:focus {
 
 .btn:hover { opacity: 0.9; }
 .btn-small { padding: 6px 12px; font-size: 12px; }
+.btn-block { display: flex; width: 100%; }
 
 .btn-primary { background: var(--primary-light); color: var(--primary); }
 .btn-secondary { background: rgba(128, 128, 128, 0.1); color: var(--text-secondary); }
@@ -345,8 +346,8 @@ input:focus, .modal-input:focus {
     background: var(--bg-modal);
     padding: 24px;
     border-radius: 16px;
-    min-width: 320px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
     box-shadow: var(--shadow-modal);
     border: 1px solid var(--border-light);
 }
@@ -493,8 +494,68 @@ input:focus, .modal-input:focus {
 body.dark .share-folder-header { background: rgba(66, 133, 244, 0.15); }
 
 /* 分享结果 */
-.share-result { display: none; }
-.share-result.show { display: block; }
+.share-result {
+    display: none;
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--bg-item);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.share-result.show {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.share-result input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 14px;
+    text-align: center;
+}
+
+.share-result input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#shareFileDisplay {
+    padding: 12px;
+    background: var(--bg-item);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#shareForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+#shareExpire {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
 
 /* 分享列表 */
 .share-list { display: flex; flex-direction: column; gap: 12px; }

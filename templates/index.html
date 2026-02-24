@@ -46,9 +46,13 @@
             <h3>📤 上传文件</h3>
             <form id="uploadForm" enctype="multipart/form-data">
                 <input type="hidden" id="uploadPath" value="">
-                <div class="drop-zone" id="dropZone">
-                    <input type="file" name="files" id="fileInput" multiple>
-                    <p>� 点击或拖拽文件到此处</p>
+                <div class="file-drop-zone" id="dropZone">
+                    <input type="file" name="files" id="fileInput" multiple style="display: none;">
+                    <div class="drop-zone-content">
+                        <div class="drop-zone-icon">📎</div>
+                        <div class="drop-zone-text">点击或拖拽文件到此处</div>
+                        <div class="drop-zone-hint">支持多文件上传</div>
+                    </div>
                 </div>
                 <div id="selectedFiles"></div>
                 <div class="modal-actions">
@@ -95,9 +99,9 @@
                     <button type="submit" class="btn btn-primary" id="createShareBtn">创建分享</button>
                 </div>
             </form>
-            <div id="shareResult" class="share-result" style="display: none;">
+            <div id="shareResult" class="share-result">
                 <input type="text" id="shareUrl" readonly>
-                <button type="button" class="btn btn-primary" onclick="copyShareUrl()">📋 复制链接</button>
+                <button type="button" class="btn btn-primary btn-block" onclick="copyShareUrl()">📋 复制链接</button>
             </div>
         </div>
     </div>

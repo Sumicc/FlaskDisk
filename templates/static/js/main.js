@@ -51,8 +51,8 @@ const hideRenameModal = () => modal.hide('renameModal');
 const showShareModal = (filename) => {
     $('shareFilename').value = filename;
     $('shareFileDisplay').textContent = `分享文件: ${filename}`;
-    $('shareResult').style.display = 'none';
-    $('createShareBtn').style.display = 'inline-block';
+    $('shareForm').style.display = 'block';
+    $('shareResult').classList.remove('show');
     $('createShareBtn').disabled = false;
     $('createShareBtn').textContent = '创建分享';
     modal.show('shareModal');
@@ -72,6 +72,11 @@ const setupFileUpload = () => {
 
     fileInput.addEventListener('change', updateUI);
 
+    // 点击上传区域触发文件选择
+    dropZone.addEventListener('click', (e) => {
+        if (e.target !== fileInput) fileInput.click();
+    });
+
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
     dropZone.addEventListener('drop', (e) => {
@@ -82,10 +87,13 @@ const setupFileUpload = () => {
     });
 };
 
-const copyShareUrl = () => {
-    $('shareUrl').select();
-    document.execCommand('copy');
-    showMsg('链接已复制到剪贴板', 'success');
+const copyShareUrl = async () => {
+    try {
+        await navigator.clipboard.writeText($('shareUrl').value);
+        showMsg('链接已复制到剪贴板', 'success');
+    } catch (err) {
+        showMsg('复制失败', 'error');
+    }
 };
 
 const copyShareLink = async (url) => {
@@ -294,8 +302,8 @@ const setupForms = () => {
 
             if (data.success) {
                 $('shareUrl').value = data.share_url;
-                $('shareResult').style.display = 'flex';
-                btn.style.display = 'none';
+                $('shareForm').style.display = 'none';
+                $('shareResult').classList.add('show');
                 showMsg('分享链接创建成功', 'success');
             } else {
                 throw new Error(data.message);

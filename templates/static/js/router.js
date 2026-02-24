@@ -115,7 +115,7 @@ async function renderFileList(params) {
                 <div class="toolbar">
                     ${currentPath ? `<button class="btn btn-secondary" data-parent="${parentPath}">⬆️ 返回上级</button>` : ''}
                     <div class="toolbar-spacer"></div>
-                    <button id="sortToggle" class="btn btn-secondary">📂 文件夹优先</button>
+                    <button id="sortToggle" class="btn btn-secondary" onclick="toggleSort()">📂 文件夹优先</button>
                     <button onclick="showMkdirModal()" class="btn btn-secondary">📁 新建文件夹</button>
                     <button onclick="showUploadModal()" class="btn btn-primary">📤 上传文件</button>
                 </div>
