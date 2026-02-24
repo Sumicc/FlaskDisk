@@ -88,8 +88,19 @@ const setupFileUpload = () => {
 };
 
 const copyShareUrl = async () => {
-    await navigator.clipboard.writeText($('shareUrl').value);
-    showMsg('链接已复制', 'success');
+    const url = $('shareUrl').value;
+    try {
+        await navigator.clipboard.writeText(url);
+        showMsg('链接已复制', 'success');
+    } catch {
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showMsg('链接已复制', 'success');
+    }
 };
 
 const copyShareLink = async (url) => {
