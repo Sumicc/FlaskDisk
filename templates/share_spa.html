@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>📤 文件分享</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="msg" class="msg"></div>
+
+    <div id="app">
+        <div class="top-bar">
+            <span class="top-bar-title" id="shareTitle">📤 文件分享</span>
+            <div class="top-bar-actions" id="topBarActions">
+                <a href="{{ url_for('login') }}" class="top-bar-btn" title="访问网盘" id="homeBtn">🏠</a>
+                <button id="themeToggle" class="top-bar-btn">🌙</button>
+            </div>
+        </div>
+
+        <div class="content-container" id="shareContent">
+            <!-- 动态内容 -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/share_router.js') }}"></script>
+</body>
+</html>

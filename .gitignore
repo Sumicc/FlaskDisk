@@ -1,0 +1,7 @@
+venv
+app.log
+config.json
+password.json
+uploads/
+shares.json
+templates/static/1.webp

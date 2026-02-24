@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>📁 Disk - 登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="msg" class="msg"></div>
+
+    <div id="app">
+        <div class="top-bar">
+            <span class="top-bar-title">📁 Disk</span>
+        </div>
+
+        <div class="content-container">
+            <div class="card">
+                {% with msgs = get_flashed_messages(with_categories=true) %}
+                    {% for cat, msg in msgs %}
+                        <div class="alert {{ cat }}">{{ msg }}</div>
+                    {% endfor %}
+                {% endwith %}
+
+                {% if first %}
+                    <p class="tip">首次使用，请设置登录密码</p>
+                {% endif %}
+
+                <form method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label>{{ '设置密码' if first else '密码' }}</label>
+                        <input type="password" id="password" name="password" required autofocus>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{ '设置并登录' if first else '登录' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
