@@ -55,6 +55,15 @@
                     </div>
                 </div>
                 <div id="selectedFiles"></div>
+                <div id="uploadProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="progressText">0%</span>
+                        <span id="speedText"></span>
+                    </div>
+                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="modal.hide('uploadModal')">取消</button>
                     <button type="submit" class="btn btn-primary" id="uploadSubmitBtn">上传</button>

@@ -1,5 +1,11 @@
 const $ = id => document.getElementById(id);
 
+const formatSpeed = (bytesPerSecond) => {
+    if (bytesPerSecond < 1024) return bytesPerSecond.toFixed(0) + ' B/s';
+    if (bytesPerSecond < 1024 * 1024) return (bytesPerSecond / 1024).toFixed(1) + ' KB/s';
+    return (bytesPerSecond / (1024 * 1024)).toFixed(2) + ' MB/s';
+};
+
 const showMsg = (text, type) => {
     const el = $('msg');
     if (!el) return;
@@ -240,31 +246,66 @@ const setupForms = () => {
     });
 
     // 上传文件
-    $('uploadForm')?.addEventListener('submit', async (e) => {
+    $('uploadForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const path = $('uploadPath').value;
         formData.append('path', path);
 
         const btn = $('uploadSubmitBtn');
-        btn.disabled = true;
-        btn.textContent = '上传中...';
+        const progressDiv = $('uploadProgress');
+        const progressFill = $('progressFill');
+        const progressText = $('progressText');
+        const speedText = $('speedText');
 
-        try {
-            const res = await fetch('/upload', { method: 'POST', body: formData });
-            if (res.redirected || res.ok) {
+        btn.disabled = true;
+        progressDiv.style.display = 'block';
+
+        const xhr = new XMLHttpRequest();
+        const startTime = Date.now();
+        let lastLoaded = 0;
+
+        xhr.upload.addEventListener('progress', (event) => {
+            if (event.lengthComputable) {
+                const percent = Math.round((event.loaded / event.total) * 100);
+                progressFill.style.width = percent + '%';
+                progressText.textContent = percent + '%';
+
+                const elapsed = (Date.now() - startTime) / 1000;
+                const speed = elapsed > 0 ? (event.loaded - lastLoaded) / elapsed : 0;
+                lastLoaded = event.loaded;
+
+                if (speed > 0) {
+                    speedText.textContent = formatSpeed(speed);
+                }
+            }
+        });
+
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
                 modal.hide('uploadModal');
                 showMsg('上传成功', 'success');
                 e.target.reset();
                 $('selectedFiles').innerHTML = '';
-                btn.textContent = '上传';
+                progressDiv.style.display = 'none';
+                progressFill.style.width = '0%';
+                progressText.textContent = '0%';
+                speedText.textContent = '';
                 if (typeof renderFileList === 'function') renderFileList({ path });
+            } else {
+                showMsg('上传失败', 'error');
             }
-        } catch (err) {
+            btn.disabled = false;
+        });
+
+        xhr.addEventListener('error', () => {
             showMsg('上传失败', 'error');
             btn.disabled = false;
-            btn.textContent = '上传';
-        }
+            progressDiv.style.display = 'none';
+        });
+
+        xhr.open('POST', '/upload');
+        xhr.send(formData);
     });
 
     // 重命名
